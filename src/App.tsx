@@ -1,8 +1,9 @@
 import React from "react";
+import AppProvider from "./AppProvider";
 import "./style/globalStyle.css";
 
-function App() {
-  return <div className="App">suiu</div>;
-}
+const App = () => {
+  return <div>sui</div>;
+};
 
-export default App;
+export default AppProvider(App)();
