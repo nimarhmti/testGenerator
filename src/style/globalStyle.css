@@ -1,11 +1,16 @@
+@import url(../assets/fontsConfig/fontiran.css);
+
 html,
 body {
   margin: 0;
   direction: ltr;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Courier New", Courier, monospace;
+  font-family: IRANSans, "Courier New", Courier, monospace;
 }
 a {
   text-decoration: none;
+}
+li {
+  list-style: none;
 }
