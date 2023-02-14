@@ -8,16 +8,16 @@ import { Navbar } from "./components/ui/Nav/Navbar";
 
 const App = () => {
   return (
-    <div>
+    <Box bgcolor="#4dabf7">
       <Navbar />
-      <Container>
+      <Box marginTop="4rem">
         <Routes>
           {routes.map((item: routeModel, index: any) => (
             <Route path={item.path} element={item.components} key={index} />
           ))}
         </Routes>
-      </Container>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

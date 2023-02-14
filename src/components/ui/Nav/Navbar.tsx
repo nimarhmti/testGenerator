@@ -17,7 +17,7 @@ import {
 // import MenuIcon from "@mui/icons-material/Menu";
 import { Container } from "@mui/system";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Links, linksModel } from "../../../config/navigation";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -29,6 +29,7 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,24 +49,6 @@ export const Navbar = () => {
     <AppBar component="nav">
       <Container>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Box>
-            <ul
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "5rem",
-              }}
-            >
-              {Links.map((item: linksModel) => (
-                <li key={item.id}>
-                  <Link style={{ color: "#fff" }} to={item.to}>
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -102,6 +85,35 @@ export const Navbar = () => {
                 </Typography>
               </MenuItem>
             </Menu>
+          </Box>
+          <Box>
+            <ul
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "5rem",
+              }}
+            >
+              {Links.map((item: linksModel) => (
+                <li key={item.id}>
+                  <Link style={{ color: "#fff" }} to={item.to}>
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Box>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            onClick={() => navigate("/")}
+            sx={{ cursor: "pointer" }}
+          >
+            <Typography fontFamily="iranSans">آزمون ساز</Typography>
+            <img src="./icons/logo.png" height={50} />
           </Box>
         </Toolbar>
       </Container>
