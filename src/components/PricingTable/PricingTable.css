@@ -1,0 +1,19 @@
+/* .pricingTableHeader {
+  position: relative;
+  width: 100%;
+  height: 300px;
+
+  background-color: #0cbaba;
+  background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
+}
+
+.pricingTableHeader:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: "#fff";
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+} */
