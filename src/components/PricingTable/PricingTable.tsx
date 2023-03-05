@@ -11,6 +11,7 @@ import {
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import React from "react";
+import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
 import "./PricingTable.css";
 interface pricingCardModel {
   duration: string;
@@ -50,9 +51,8 @@ export const PricingTable = () => {
       height="100vh"
       bgcolor="#fff"
     >
-      <Container>
+      <ContainerWrapper>
         <Box height="50%" sx={boxStyle}>
-          <img src="./img/BeFunky-collage.jpg" style={{ width: "400px" }} />
           <Box sx={{ textAlign: "end" }}>
             <Typography
               variant="h2"
@@ -66,6 +66,7 @@ export const PricingTable = () => {
               <Chip label="آزمون ساز رایگان بدون محدودیت زمانی استفاده نمایید" />
             </Typography>
           </Box>
+          <img src="./img/BeFunky-collage.jpg" style={{ width: "400px" }} />
         </Box>
         <Box textAlign="center" mt={4}>
           <Typography fontSize="18px" fontWeight={500}>
@@ -101,7 +102,7 @@ export const PricingTable = () => {
             ))}
           </Grid>
         </Box>
-      </Container>
+      </ContainerWrapper>
     </Box>
   );
 };

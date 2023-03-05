@@ -8,7 +8,7 @@ import { Navbar } from "./components/ui/Nav/Navbar";
 
 const App = () => {
   return (
-    <Box bgcolor="#f1f3f5">
+    <Box>
       <Navbar />
       <Box marginTop="4rem">
         <Routes>

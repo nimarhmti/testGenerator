@@ -49,6 +49,34 @@ export const Navbar = () => {
     <AppBar component="nav">
       <Container>
         <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            onClick={() => navigate("/")}
+            sx={{ cursor: "pointer" }}
+          >
+            <Typography fontFamily="iranSans">آزمون ساز</Typography>
+            <img src="./icons/logo.png" height={50} />
+          </Box>
+          <Box>
+            <ul
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "5rem",
+              }}
+            >
+              {Links.map((item: linksModel) => (
+                <li key={item.id}>
+                  <Link style={{ color: "#fff" }} to={item.to}>
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -73,7 +101,7 @@ export const Navbar = () => {
             >
               <MenuItem
                 onClick={handleCloseUserMenu}
-                sx={{ justifyContent: "flex-end" }}
+                sx={{ justifyContent: "flex-start" }}
               >
                 <Typography fontFamily="iranSans" textAlign="center">
                   خروج
@@ -85,35 +113,6 @@ export const Navbar = () => {
                 </Typography>
               </MenuItem>
             </Menu>
-          </Box>
-          <Box>
-            <ul
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "5rem",
-              }}
-            >
-              {Links.map((item: linksModel) => (
-                <li key={item.id}>
-                  <Link style={{ color: "#fff" }} to={item.to}>
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Box>
-
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={1}
-            onClick={() => navigate("/")}
-            sx={{ cursor: "pointer" }}
-          >
-            <Typography fontFamily="iranSans">آزمون ساز</Typography>
-            <img src="./icons/logo.png" height={50} />
           </Box>
         </Toolbar>
       </Container>

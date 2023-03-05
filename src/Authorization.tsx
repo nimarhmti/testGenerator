@@ -4,8 +4,8 @@ interface props {
   children: React.ReactNode;
 }
 export const Authorization = ({ children }: props) => {
-  const [isAuthenticationset, setIsAuthentication] = useState<boolean>(false);
+  const [isAuthentication, setIsAuthentication] = useState<boolean>(false);
 
-  if (!isAuthenticationset) return <Navigate to="/login" />;
+  if (!isAuthentication) return <Navigate to="/login" />;
   return <div>Authorization</div>;
 };

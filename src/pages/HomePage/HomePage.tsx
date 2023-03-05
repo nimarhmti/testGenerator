@@ -2,6 +2,7 @@ import { Button, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import React from "react";
+import { ContainerWrapper } from "../../components/ui/wrappers/ContainerWrapper";
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const HomePage = () => {
       height="100vh"
       bgcolor="#fff"
     >
-      <Container sx={{ display: "flex", alignItems: "center" }}>
+      <ContainerWrapper>
         <Grid
           container
           direction="column"
@@ -52,24 +53,11 @@ export const HomePage = () => {
               alignItems="center"
               spacing={7}
             >
-              <Grid item xs={6}>
-                <img
-                  style={{
-                    objectFit: "contain",
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50px",
-                    background: "#e0e0e0",
-                    boxShadow: "8px 8px 38px #cccccc, -8px -8px 38px #f4f4f4",
-                  }}
-                  src="./img/3.png"
-                />
-              </Grid>
               <Grid item xs={6} spacing={7}>
                 <Typography
                   variant="h4"
                   component="h3"
-                  textAlign="end"
+                  textAlign="start"
                   fontWeight={500}
                   marginBottom={2.5}
                 >
@@ -78,7 +66,7 @@ export const HomePage = () => {
                 <Typography
                   variant="body1"
                   component="p"
-                  textAlign="end"
+                  textAlign="start"
                   marginBottom={3}
                   lineHeight="1.6"
                 >
@@ -90,7 +78,7 @@ export const HomePage = () => {
                 <Typography
                   variant="body1"
                   component="p"
-                  textAlign="end"
+                  textAlign="start"
                   lineHeight="1.6"
                 >
                   آزمون ساز فرم افزار تمامی امکانات لازم جهت برگزاری یک آزمون
@@ -121,10 +109,23 @@ export const HomePage = () => {
                   </Button>
                 </Box>
               </Grid>
+              <Grid item xs={6}>
+                <img
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "50px",
+                    background: "#e0e0e0",
+                    boxShadow: "8px 8px 38px #cccccc, -8px -8px 38px #f4f4f4",
+                  }}
+                  src="./img/3.png"
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Container>
+      </ContainerWrapper>
     </Box>
   );
 };
