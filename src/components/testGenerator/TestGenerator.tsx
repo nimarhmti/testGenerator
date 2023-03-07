@@ -1,6 +1,6 @@
 import { Box, MenuItem, TextField } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
 import { FromWrapper } from "../ui/wrappers/FromWrapper";
 import Stepper from "@mui/material/Stepper";
@@ -17,6 +17,10 @@ const steps = ["مرحله یک", "مرحله دوم", "مرحله سوم"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+  useEffect(() => {
+    console.log(activeStep);
+  }, [activeStep]);
+
   const isStepOptional = (step: number) => {
     return step === 1;
   };
@@ -92,9 +96,9 @@ export const TestGenerator = () => {
         ) : (
           <React.Fragment>
             <FromWrapper title="مرحله اول">
-              {/* <Initialize /> */}
-              {/* <SelectSubject /> */}
-              <Preparing />
+              {activeStep === 0 ? <Initialize /> : null}
+              {activeStep === 1 ? <SelectSubject /> : null}
+              {activeStep === 2 ? <Preparing /> : null}
             </FromWrapper>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />

@@ -12,6 +12,22 @@ interface selectedSubjectFrom {
   time: string;
 }
 
+interface ItemModel {
+  value: string | number;
+  title: string;
+}
+
+const difficultyListItem: ItemModel[] = [
+  { value: "d1", title: "آسان" },
+  { value: "d2", title: "متوسط" },
+  { value: "d3", title: "سخت" },
+];
+const subjectListItem: ItemModel[] = [
+  { value: "s1", title: "ریاضی" },
+  { value: "s2", title: "علوم" },
+  { value: "s3", title: "دینی" },
+];
+
 const inputRules = {
   required: {
     message: "لطفا فیلد را پر کنید",
@@ -40,7 +56,7 @@ export const SelectSubject = () => {
   });
 
   const onSubmit = (data: selectedSubjectFrom) => {
-    console.log(data);
+    console.log(errors);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,12 +70,14 @@ export const SelectSubject = () => {
               <SelectBox
                 handleChange={onChange}
                 value={value}
-                inputLabel="درس"
+                inputLabel="موضوع"
                 error={!!errors.subject}
               >
-                <MenuItem value="01f">ریاضی</MenuItem>
-                <MenuItem value="02f">علوم</MenuItem>
-                <MenuItem value="03f">هندسه </MenuItem>
+                {subjectListItem.map((item: ItemModel) => (
+                  <MenuItem value={item.value} key={item.value}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </SelectBox>
             )}
           />
@@ -78,9 +96,11 @@ export const SelectSubject = () => {
                 inputLabel="میزان سختی"
                 error={!!errors.difficulty}
               >
-                <MenuItem value="01s">آسان</MenuItem>
-                <MenuItem value="02s">متوسط</MenuItem>
-                <MenuItem value="03s">سخت</MenuItem>
+                {difficultyListItem.map((item: ItemModel) => (
+                  <MenuItem value={item.value} key={item.value}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </SelectBox>
             )}
           />
@@ -102,9 +122,22 @@ export const SelectSubject = () => {
           />
         </Grid>
       </Grid>
-      <Button variant="contained" type="submit">
-        اتمام
-      </Button>
+      <Box
+        sx={{
+          marginTop: 2,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button variant="contained" type="submit">
+          قبلی
+        </Button>
+        <Button variant="contained" type="submit">
+          بعدی
+        </Button>
+      </Box>
     </form>
   );
 };

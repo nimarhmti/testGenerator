@@ -1,4 +1,4 @@
-import { Button, Grid, MenuItem } from "@mui/material";
+import { Button, Grid, MenuItem, Box } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { SelectBox } from "../../ui/SelectBox/SelectBox";
@@ -7,6 +7,26 @@ interface InitializeForm {
   typeOfExam: string;
   scoreAmount: string;
 }
+interface ItemModel {
+  value: string | number;
+  title: string;
+}
+const gradeItems: ItemModel[] = [
+  { value: "g1", title: "ابتدایی" },
+  { value: "g2", title: "متوسطه اول" },
+  { value: "g3", title: "متوسطه دوم" },
+];
+const typeOfExamItems: ItemModel[] = [
+  { value: "t1", title: "مستمر" },
+  { value: "t2", title: "میان ترم" },
+  { value: "t3", title: "پایان ترم" },
+];
+const scoreAmountItems: ItemModel[] = [
+  { value: "s5", title: "5" },
+  { value: "s10", title: "10" },
+  { value: "s15", title: "15" },
+  { value: "s20", title: "20" },
+];
 
 export const Initialize = () => {
   const {
@@ -39,9 +59,11 @@ export const Initialize = () => {
                 inputLabel="مقطع"
                 error={!!errors.grade}
               >
-                <MenuItem value="01f">ابتدایی</MenuItem>
-                <MenuItem value="02f">متوسطه اول</MenuItem>
-                <MenuItem value="03f">متوسه دوم</MenuItem>
+                {gradeItems.map((item: ItemModel) => (
+                  <MenuItem value={item.value} key={item.value}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </SelectBox>
             )}
           />
@@ -58,10 +80,11 @@ export const Initialize = () => {
                 inputLabel="جمع نمرات"
                 error={!!errors.scoreAmount}
               >
-                <MenuItem value="01s">5</MenuItem>
-                <MenuItem value="02s">10</MenuItem>
-                <MenuItem value="03s">15</MenuItem>
-                <MenuItem value="04s">20</MenuItem>
+                {scoreAmountItems.map((item: ItemModel) => (
+                  <MenuItem value={item.value} key={item.value}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </SelectBox>
             )}
           />
@@ -78,17 +101,32 @@ export const Initialize = () => {
                 inputLabel="نوع آزمون"
                 error={!!errors.scoreAmount}
               >
-                <MenuItem value="01t">مستمر</MenuItem>
-                <MenuItem value="02t"> میان ترم</MenuItem>
-                <MenuItem value="03t">پایانی </MenuItem>
+                {typeOfExamItems.map((item: ItemModel) => (
+                  <MenuItem value={item.value} key={item.value}>
+                    {item.title}
+                  </MenuItem>
+                ))}
               </SelectBox>
             )}
           />
         </Grid>
       </Grid>
-      <Button variant="contained" type="submit">
-        اتمام
-      </Button>
+      <Box
+        sx={{
+          marginTop: 2,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button variant="contained" type="submit">
+          قبلی
+        </Button>
+        <Button variant="contained" type="submit">
+          بعدی
+        </Button>
+      </Box>
     </form>
   );
 };
