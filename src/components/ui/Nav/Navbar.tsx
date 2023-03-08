@@ -56,8 +56,8 @@ export const Navbar = () => {
             onClick={() => navigate("/")}
             sx={{ cursor: "pointer" }}
           >
-            <Typography fontFamily="iranSans">آزمون ساز</Typography>
             <img src="./icons/logo.png" height={50} />
+            <Typography fontFamily="iranSans">آزمون ساز آنلاین</Typography>
           </Box>
           <Box>
             <ul
