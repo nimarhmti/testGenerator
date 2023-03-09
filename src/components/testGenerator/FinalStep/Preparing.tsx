@@ -12,7 +12,11 @@ interface preparingItemModel {
   value: string | number;
   title: string | number;
 }
-
+interface props {
+  handleNext: () => void;
+  handleBack: () => void;
+  activeStep: number;
+}
 const episodeList: preparingItemModel[] = [
   { value: "sssss", title: "درس 1" },
   { value: "eeee", title: "درس 2" },
@@ -34,9 +38,8 @@ const inputRules = {
     value: 3,
   },
 };
-// ];
 
-export const Preparing = () => {
+export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
   const [episode, setEpisode] = useState<string[]>([]);
 
   const {
@@ -57,9 +60,7 @@ export const Preparing = () => {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
-    console.log(episode);
+    if (errors) handleNext();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -90,6 +91,7 @@ export const Preparing = () => {
               <Input
                 {...field}
                 error={!!errors.numberOfQuestions}
+                label="تعدا سوالات"
                 helperText={
                   errors.numberOfQuestions
                     ? errors.numberOfQuestions?.message
@@ -112,8 +114,8 @@ export const Preparing = () => {
         <Button variant="contained" type="submit">
           قبلی
         </Button>
-        <Button variant="contained" type="submit">
-          بعدی
+        <Button variant="contained" type="submit" color="success">
+          اتمام
         </Button>
       </Box>
     </form>

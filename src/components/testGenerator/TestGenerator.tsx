@@ -1,4 +1,4 @@
-import { Box, MenuItem, TextField } from "@mui/material";
+import { Box, Chip, MenuItem, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
@@ -13,6 +13,7 @@ import { SelectBox } from "../ui/SelectBox/SelectBox";
 import { Initialize } from "./firstStep/Initialize";
 import { SelectSubject } from "./secondStep/SelectSubject";
 import { Preparing } from "./FinalStep/Preparing";
+import { OrderTable } from "./Table/Table";
 const steps = ["مرحله یک", "مرحله دوم", "مرحله سوم"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -84,41 +85,50 @@ export const TestGenerator = () => {
           })}
         </Stepper>
         {activeStep === steps.length ? (
-          <React.Fragment>
+          <FromWrapper title="جدول سفارشات">
             <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
+              <Chip label="برای دریافت سوالات کلیک کنید..." color="success" />
+              <Button
+                variant="outlined"
+                color="success"
+                sx={{ marginRight: 1, width: "10px" }}
+              >
+                دیافت
+              </Button>
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2, mb: 1 }}>
               <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
+              <Button onClick={handleReset} variant="contained">
+                ثبت سفارش
+              </Button>
             </Box>
-          </React.Fragment>
+
+            <OrderTable />
+          </FromWrapper>
         ) : (
           <React.Fragment>
             <FromWrapper title="مرحله اول">
-              {activeStep === 0 ? <Initialize /> : null}
-              {activeStep === 1 ? <SelectSubject /> : null}
-              {activeStep === 2 ? <Preparing /> : null}
+              {activeStep === 0 ? (
+                <Initialize handleNext={handleNext} activeStep={activeStep} />
+              ) : null}
+              {activeStep === 1 ? (
+                <SelectSubject
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                />
+              ) : null}
+              {activeStep === 2 ? (
+                <Preparing
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                  activeStep={activeStep}
+                />
+              ) : null}
             </FromWrapper>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              {isStepOptional(activeStep) && (
-                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                  Skip
-                </Button>
-              )}
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </Box>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
+            <FromWrapper title="جدول سفارشات">
+              <OrderTable />
+            </FromWrapper>
           </React.Fragment>
         )}
       </Box>

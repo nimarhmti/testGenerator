@@ -1,28 +1,51 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, makeStyles, Typography } from "@mui/material";
 import { Box, display, width } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../ui/Input/Input";
+
 interface registerModel {
   userName: string;
   password: string;
   confirmPassword?: string;
 }
-// interface signUpModel {
-//   userName: string;
-//   password: string;
-//   confirmPassword?: string;
-// }
+
 const centeringStyle = {
   width: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-evenly",
 };
+const emailRules = {
+  required: {
+    message: "لطفا فیلد را پر کنید",
+    value: true,
+  },
+  min: {
+    message: "ایملی با طول بیشتر وارد کنید",
+    value: 4,
+  },
+  parent: {
+    message: "ایمیل را به درستی وارد کنید",
+    value: "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
+  },
+};
+const passRules = {
+  required: {
+    message: "لطفا فیلد را پر کنید",
+    value: true,
+  },
+  min: {
+    message: "لطفا رمزی با طول بیشتر وارد کنید",
+    value: 4,
+  },
+};
+
 export const Form = () => {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
+
   const navigate = useNavigate();
 
   const {
@@ -57,7 +80,7 @@ export const Form = () => {
           <Controller
             name="userName"
             control={control}
-            rules={{ required: true }}
+            rules={emailRules}
             render={({ field }) => (
               <Input
                 {...field}
@@ -73,9 +96,10 @@ export const Form = () => {
           <Controller
             name="password"
             control={control}
-            rules={{ required: true }}
+            rules={passRules}
             render={({ field }) => (
               <Input
+                type="password"
                 {...field}
                 label="رمز"
                 fullWidth
@@ -90,7 +114,7 @@ export const Form = () => {
             <Controller
               name="confirmPassword"
               control={control}
-              rules={{ required: true }}
+              rules={passRules}
               render={({ field }) => (
                 <Input
                   {...field}

@@ -11,7 +11,10 @@ interface selectedSubjectFrom {
   difficulty: string;
   time: string;
 }
-
+interface props {
+  handleNext: () => void;
+  handleBack: () => void;
+}
 interface ItemModel {
   value: string | number;
   title: string;
@@ -42,7 +45,7 @@ const inputRules = {
     value: 10,
   },
 };
-export const SelectSubject = () => {
+export const SelectSubject = ({ handleBack, handleNext }: props) => {
   const {
     control,
     handleSubmit,
@@ -56,7 +59,7 @@ export const SelectSubject = () => {
   });
 
   const onSubmit = (data: selectedSubjectFrom) => {
-    console.log(errors);
+    if (errors) handleNext();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -131,11 +134,11 @@ export const SelectSubject = () => {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" type="submit">
-          قبلی
+        <Button variant="contained" onClick={handleBack}>
+          بازگشت
         </Button>
-        <Button variant="contained" type="submit">
-          بعدی
+        <Button variant="contained" color="success" type="submit">
+          ادامه
         </Button>
       </Box>
     </form>

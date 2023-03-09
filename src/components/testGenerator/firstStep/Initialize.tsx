@@ -11,6 +11,11 @@ interface ItemModel {
   value: string | number;
   title: string;
 }
+interface props {
+  handleNext: () => void;
+  // handleBack: () => void;
+  activeStep: number;
+}
 const gradeItems: ItemModel[] = [
   { value: "g1", title: "ابتدایی" },
   { value: "g2", title: "متوسطه اول" },
@@ -28,7 +33,7 @@ const scoreAmountItems: ItemModel[] = [
   { value: "s20", title: "20" },
 ];
 
-export const Initialize = () => {
+export const Initialize = ({ handleNext, activeStep }: props) => {
   const {
     control,
     handleSubmit,
@@ -42,7 +47,8 @@ export const Initialize = () => {
   });
 
   const onSubmit = (data: InitializeForm) => {
-    console.log(data);
+    if (errors) handleNext();
+    if (!errors) console.log(errors);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -120,11 +126,11 @@ export const Initialize = () => {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" type="submit">
-          قبلی
+        <Button variant="contained" color="success" type="submit" disabled>
+          بازگشت
         </Button>
-        <Button variant="contained" type="submit">
-          بعدی
+        <Button variant="contained" color="success" type="submit">
+          ادامه
         </Button>
       </Box>
     </form>

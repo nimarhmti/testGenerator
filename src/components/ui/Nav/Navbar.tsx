@@ -100,16 +100,24 @@ export const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               <MenuItem
-                onClick={handleCloseUserMenu}
+                onClick={() => {
+                  navigate("/");
+                  handleCloseUserMenu();
+                }}
                 sx={{ justifyContent: "flex-start" }}
               >
                 <Typography fontFamily="iranSans" textAlign="center">
                   خروج
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem
+                onClick={() => {
+                  navigate("/register");
+                  handleCloseUserMenu();
+                }}
+              >
                 <Typography fontFamily="iranSans" textAlign="match-parent">
-                  حساب کاربری
+                  ورود
                 </Typography>
               </MenuItem>
             </Menu>

@@ -62,7 +62,7 @@ export const PricingTable = () => {
             >
               ساخت فرم آنلاین
             </Typography>
-            <Typography variant="body1" fontWeight="600">
+            <Typography variant="body1" fontWeight="600" textAlign="start">
               <Chip label="آزمون ساز رایگان بدون محدودیت زمانی استفاده نمایید" />
             </Typography>
           </Box>
