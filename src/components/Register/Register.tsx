@@ -5,13 +5,13 @@ import { api } from "../../config/axios";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
 import { Form } from "./Form";
 
+const BASE = process.env.BASE_API;
+
 export const RegisterForm = () => {
   useEffect(() => {
     const fetchData = async () => {
-      const data = await api.post("/register", {
-        name: "nima",
-        email: "nima1379@email.com",
-        password: "N12345678",
+      const data = await fetch("http//:localhost8000:api/register", {
+        method: "POST",
       });
     };
     fetchData().catch((err) => console.log(err.message));
