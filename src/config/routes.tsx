@@ -52,10 +52,10 @@ export const routes: routeModel[] = [
     components: <Support />,
     private: false,
   },
-  {
-    id: "templates",
-    path: "/templates",
-    components: <Templates />,
-    private: false,
-  },
+  // {
+  //   id: "templates",
+  //   path: "/templates",
+  //   components: <Templates />,
+  //   private: false,
+  // },
 ];

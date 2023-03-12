@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import HelpIcon from "@mui/icons-material/Help";
 import { Typography } from "@mui/material";
 interface props {
-  title: string;
+  title?: string;
   helpNote?: string[] | string;
 }
 export const FromWrapper: React.FC<props & PropsWithChildren> = ({

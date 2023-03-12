@@ -48,7 +48,7 @@ export const Navbar = () => {
   return (
     <AppBar component="nav">
       <Container>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar sx={{ justifyContent: "space-evenly", gap: 18 }}>
           <Box
             display="flex"
             alignItems="center"

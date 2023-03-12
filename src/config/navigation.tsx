@@ -14,6 +14,6 @@ export const Links: linksModel[] = [
   { title: "آزمون ساز", to: "/quizBuilder", id: "QuizBuilder" },
   { title: "تعرفه ها", to: "/pricing", id: "Pricing" },
   { title: "پشتیبانی", to: "/support", id: "Support" },
-  { title: "نمونه ها", to: "/templates", id: "Templates" },
+  // { title: "نمونه ها", to: "/templates", id: "Templates" },
   // { title: "آزمون ساز", to: "/", id: "testMaker" },
 ];
