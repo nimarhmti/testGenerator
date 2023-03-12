@@ -1,10 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { api } from "../../config/axios";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
 import { Form } from "./Form";
 
 export const RegisterForm = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await api.post("/register", {
+        name: "nima",
+        email: "nima1379@email.com",
+        password: "N12345678",
+      });
+    };
+    fetchData().catch((err) => console.log(err.message));
+  }, []);
   return (
     <Box
       sx={{
