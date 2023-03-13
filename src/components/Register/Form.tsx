@@ -48,7 +48,11 @@ const passRules = {
 export const Form = () => {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const { mutate: setAuthentication, isLoading } = useUserAuthentication();
+  const {
+    mutate: setAuthentication,
+    isLoading,
+    data: response,
+  } = useUserAuthentication();
   const navigate = useNavigate();
 
   const {
@@ -80,7 +84,7 @@ export const Form = () => {
         },
         {
           onSuccess() {
-            console.log("done");
+            console.log(response);
           },
           onError() {
             console.log("Some went wrong!");
