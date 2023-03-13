@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../ui/Input/Input";
 import { useUserAuthentication } from "../../services/application_authentication/appAuthentication.query";
+import { MODEL } from "../../services/application_authentication/appAuthentication.interface";
 
 interface registerModel {
   userName: string;
@@ -70,10 +71,12 @@ export const Form = () => {
     if (isSignUp)
       setAuthentication(
         {
-          name: data.userName,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
+          user: {
+            name: data.userName,
+            email: data.email,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+          },
         },
         {
           onSuccess() {

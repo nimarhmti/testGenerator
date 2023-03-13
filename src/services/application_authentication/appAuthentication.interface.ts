@@ -4,3 +4,7 @@ export interface authUserDataModel {
   password: string;
   confirmPassword?: string;
 }
+
+export interface MODEL {
+  user: authUserDataModel;
+}

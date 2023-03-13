@@ -1,10 +1,10 @@
 import { info } from "console";
 import { useMutation } from "react-query";
 import { userAuthentication } from "./appAuthentication.api";
-import type { authUserDataModel } from "./appAuthentication.interface";
+import type { authUserDataModel, MODEL } from "./appAuthentication.interface";
 
 export const useUserAuthentication = () =>
-  useMutation((info: authUserDataModel) => userAuthentication(info), {
+  useMutation((info: MODEL) => userAuthentication(info), {
     onSuccess() {
       console.log("done");
     },
