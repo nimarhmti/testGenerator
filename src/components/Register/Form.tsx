@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../ui/Input/Input";
+import { useUserAuthentication } from "../../services/application_authentication/appAuthentication.query";
 
 interface registerModel {
   userName: string;
+  email?: string;
   password: string;
   confirmPassword?: string;
 }
@@ -45,7 +47,7 @@ const passRules = {
 export const Form = () => {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
-
+  const { mutate: setAuthentication, isLoading } = useUserAuthentication();
   const navigate = useNavigate();
 
   const {
@@ -56,14 +58,32 @@ export const Form = () => {
     defaultValues: {
       password: "",
       userName: "",
+      email: "",
+      confirmPassword: "",
     },
   });
   const redirectHandler = () => {
     setIsLogin(!isLogin);
     setIsSignUp(!isSignUp);
   };
-  const onSubmit = (data: any) => {
-    return;
+  const onSubmit = (data: registerModel) => {
+    if (isSignUp)
+      setAuthentication(
+        {
+          name: data.userName,
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        },
+        {
+          onSuccess() {
+            console.log("done");
+          },
+          onError() {
+            console.log("Some went wrong!");
+          },
+        }
+      );
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,6 +112,25 @@ export const Form = () => {
             )}
           />
         </Grid>
+        {isSignUp ? (
+          <Grid item xs={12} sx={centeringStyle}>
+            <Controller
+              name="email"
+              control={control}
+              rules={emailRules}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="ایمیل"
+                  fullWidth
+                  error={!!errors.userName}
+                  helperText={errors.userName ? errors.userName.message : ""}
+                />
+              )}
+            />
+          </Grid>
+        ) : null}
+
         <Grid item xs={12} sx={centeringStyle}>
           <Controller
             name="password"

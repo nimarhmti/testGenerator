@@ -5,24 +5,25 @@ import { api } from "../../config/axios";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
 import { Form } from "./Form";
 
-const BASE = process.env.BASE_API;
+// const BASE = process.env.BASE_API;
 
 export const RegisterForm = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await api.post("", {
-        name: "",
-        email: "",
-        pass: "",
-      });
-    };
-    fetchData().catch((err) => console.log(err.message));
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await api.post("", {
+  //       name: "",
+  //       email: "",
+  //       pass: "",
+  //     });
+  //   };
+  //   fetchData().catch((err) => console.log(err.message));
+  // }, []);
+
   return (
     <Box
       sx={{
         width: "729px",
-        height: "414px",
+        height: "420px",
         borderRadius: "29px",
         boxShadow: "15px 15px 30px #d3d3d3,-15px -15px 30px #ededed",
         display: "flex",
@@ -37,6 +38,7 @@ export const RegisterForm = () => {
         alignItems="center"
         justifyContent="center"
         flexDirection="column"
+        paddingTop={3}
       >
         <Form />
       </Box>
