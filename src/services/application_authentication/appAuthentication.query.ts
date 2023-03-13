@@ -4,7 +4,7 @@ import { userAuthentication } from "./appAuthentication.api";
 import type { authUserDataModel, MODEL } from "./appAuthentication.interface";
 
 export const useUserAuthentication = () =>
-  useMutation((info: MODEL) => userAuthentication(info), {
+  useMutation((info: authUserDataModel) => userAuthentication(info), {
     onSuccess() {
       console.log("done");
     },

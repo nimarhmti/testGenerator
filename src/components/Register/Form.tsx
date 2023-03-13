@@ -75,12 +75,10 @@ export const Form = () => {
     if (isSignUp)
       setAuthentication(
         {
-          user: {
-            name: data.userName,
-            email: data.email,
-            password: data.password,
-            confirmPassword: data.confirmPassword,
-          },
+          name: data.userName,
+          email: data.email,
+          password: data.password,
+          password_confirmation: data.confirmPassword,
         },
         {
           onSuccess() {
