@@ -10,8 +10,10 @@ const BASE = process.env.BASE_API;
 export const RegisterForm = () => {
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch("http//:localhost8000:api/register", {
-        method: "POST",
+      const data = await api.post("", {
+        name: "",
+        email: "",
+        pass: "",
       });
     };
     fetchData().catch((err) => console.log(err.message));
