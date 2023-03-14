@@ -15,12 +15,12 @@ import { SelectSubject } from "./secondStep/SelectSubject";
 import { Preparing } from "./FinalStep/Preparing";
 import { OrderTable } from "./Table/Table";
 import { useAtom } from "jotai";
-import { userIsLogIn } from "../../store";
+import { isAuthentication } from "../../store";
 import AlertDialog from "./Dialog";
 const steps = ["مرحله یک", "مرحله دوم", "مرحله سوم"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+  const [isLogIn, setIsLogIn] = useAtom(isAuthentication);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);

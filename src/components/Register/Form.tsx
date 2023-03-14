@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../ui/Input/Input";
 import { useAtom } from "jotai";
-import { useUserAuthentication } from "../../services/application_authentication/appAuthentication.query";
-import { MODEL } from "../../services/application_authentication/appAuthentication.interface";
-import { userIsLogIn } from "../../store";
+import {
+  useUserAuthentication,
+  useUserLogIn,
+} from "../../services/application_authentication/appAuthentication.query";
 
-interface registerModel {
+import { isAuthentication } from "../../store";
+
+interface registerInputModel {
   userName: string;
   email?: string;
   password: string;
@@ -50,20 +53,23 @@ const passRules = {
 export const Form = () => {
   const [isSignUpPage, setIsSignUpPage] = useState<boolean>(false);
   const [isLoginPage, setIsLoginPage] = useState<boolean>(true);
-  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+  const [isLogIn, setIsLogIn] = useAtom(isAuthentication);
 
   const {
     mutate: setAuthentication,
-    isLoading,
-    data: response,
+    isLoading: isSigningUp,
+    data: signUpResponse,
   } = useUserAuthentication();
+  const { mutate: setLogIn, isLoading, data: logInResponse } = useUserLogIn();
+
   const navigate = useNavigate();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<registerModel>({
+  } = useForm<registerInputModel>({
     defaultValues: {
       password: "",
       userName: "",
@@ -75,7 +81,7 @@ export const Form = () => {
     setIsLoginPage(!isLoginPage);
     setIsSignUpPage(!isSignUpPage);
   };
-  const onSubmit = (data: registerModel) => {
+  const onSubmit = (data: registerInputModel) => {
     if (isSignUpPage)
       setAuthentication(
         {
@@ -87,10 +93,28 @@ export const Form = () => {
         {
           onSuccess() {
             setIsLogIn(true);
+            reset();
             navigate("/quizBuilder");
           },
           onError() {
-            console.log("Some went wrong!");
+            console.log("Some went wrong!:signUp ");
+          },
+        }
+      );
+    else
+      setLogIn(
+        {
+          name: data.userName,
+          password: data.password,
+        },
+        {
+          onSuccess() {
+            setIsLogIn(true);
+            reset();
+            navigate("/quizBuilder");
+          },
+          onError() {
+            console.log("Some went wrong!:logIn");
           },
         }
       );

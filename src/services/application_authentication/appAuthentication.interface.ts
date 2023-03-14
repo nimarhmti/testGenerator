@@ -4,7 +4,3 @@ export interface authUserDataModel {
   password: string;
   password_confirmation?: string;
 }
-
-export interface MODEL {
-  user: authUserDataModel;
-}

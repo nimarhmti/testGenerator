@@ -20,7 +20,7 @@ import { Container } from "@mui/system";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Links, linksModel } from "../../../config/navigation";
-import { userIsLogIn } from "../../../store";
+import { isAuthentication } from "../../../store";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -31,7 +31,7 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+  const [isLogIn, setIsLogIn] = useAtom(isAuthentication);
 
   const navigate = useNavigate();
 
