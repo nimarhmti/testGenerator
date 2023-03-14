@@ -13,12 +13,14 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import { useAtom } from "jotai";
 // import MenuIcon from "@mui/icons-material/Menu";
 // import MenuIcon from "@mui/icons-material/Menu";
 import { Container } from "@mui/system";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Links, linksModel } from "../../../config/navigation";
+import { userIsLogIn } from "../../../store";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -29,6 +31,8 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -99,25 +103,38 @@ export const Navbar = () => {
               open={!!anchorElUser}
               onClose={handleCloseUserMenu}
             >
+              {isLogIn ? (
+                <MenuItem
+                  onClick={() => {
+                    navigate("/");
+                    handleCloseUserMenu();
+                  }}
+                  sx={{ justifyContent: "flex-start" }}
+                >
+                  <Typography fontFamily="iranSans" textAlign="center">
+                    خروج
+                  </Typography>
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  onClick={() => {
+                    navigate("/register");
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Typography fontFamily="iranSans" textAlign="match-parent">
+                    ورود
+                  </Typography>
+                </MenuItem>
+              )}
               <MenuItem
                 onClick={() => {
-                  navigate("/");
-                  handleCloseUserMenu();
-                }}
-                sx={{ justifyContent: "flex-start" }}
-              >
-                <Typography fontFamily="iranSans" textAlign="center">
-                  خروج
-                </Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate("/register");
+                  navigate("/quizBuilder");
                   handleCloseUserMenu();
                 }}
               >
                 <Typography fontFamily="iranSans" textAlign="match-parent">
-                  ورود
+                  ساخت آژمون
                 </Typography>
               </MenuItem>
             </Menu>

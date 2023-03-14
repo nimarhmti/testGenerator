@@ -1,4 +1,4 @@
-import { Box, Chip, MenuItem, TextField } from "@mui/material";
+import { Box, Chip, MenuItem, TextField, Modal } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { ContainerWrapper } from "../ui/wrappers/ContainerWrapper";
@@ -14,9 +14,18 @@ import { Initialize } from "./firstStep/Initialize";
 import { SelectSubject } from "./secondStep/SelectSubject";
 import { Preparing } from "./FinalStep/Preparing";
 import { OrderTable } from "./Table/Table";
+import { useAtom } from "jotai";
+import { userIsLogIn } from "../../store";
+import AlertDialog from "./Dialog";
 const steps = ["مرحله یک", "مرحله دوم", "مرحله سوم"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [skipped, setSkipped] = React.useState(new Set<number>());
   useEffect(() => {
     console.log(activeStep);
@@ -44,8 +53,6 @@ export const TestGenerator = () => {
   };
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
       throw new Error("You can't skip a step that isn't optional.");
     }
 
@@ -59,79 +66,90 @@ export const TestGenerator = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
-
+  const getExamHandler = () => {
+    if (isLogIn) return;
+    else handleOpen();
+  };
   return (
-    <Box sx={{ padding: 3 }}>
-      <Box sx={{ width: "100%" }}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const stepProps: { completed?: boolean } = {};
-            const labelProps: {
-              optional?: React.ReactNode;
-            } = {};
-            if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
+    <>
+      <AlertDialog
+        open={open}
+        dialogCloseHandler={handleClose}
+        dialogOpenHandler={handleOpen}
+      />
+      <Box sx={{ padding: 3 }}>
+        <Box sx={{ width: "100%" }}>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: {
+                optional?: React.ReactNode;
+              } = {};
+              if (isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
               );
-            }
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === steps.length ? (
-          <FromWrapper title="جدول سفارشات">
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              <Chip label="برای دریافت سوالات کلیک کنید..." color="success" />
-              <Button
-                variant="outlined"
-                color="success"
-                sx={{ marginRight: 1, width: "10px" }}
-              >
-                دیافت
-              </Button>
-            </Typography>
-
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2, mb: 1 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset} variant="contained">
-                ثبت سفارش
-              </Button>
-            </Box>
-
-            <OrderTable />
-          </FromWrapper>
-        ) : (
-          <React.Fragment>
-            <FromWrapper title="مرحله اول">
-              {activeStep === 0 ? (
-                <Initialize handleNext={handleNext} activeStep={activeStep} />
-              ) : null}
-              {activeStep === 1 ? (
-                <SelectSubject
-                  handleNext={handleNext}
-                  handleBack={handleBack}
-                />
-              ) : null}
-              {activeStep === 2 ? (
-                <Preparing
-                  handleNext={handleNext}
-                  handleBack={handleBack}
-                  activeStep={activeStep}
-                />
-              ) : null}
-            </FromWrapper>
+            })}
+          </Stepper>
+          {activeStep === steps.length ? (
             <FromWrapper title="جدول سفارشات">
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                <Chip label="برای دریافت سوالات کلیک کنید..." color="success" />
+                <Button
+                  variant="outlined"
+                  color="success"
+                  sx={{ marginRight: 1, width: "10px" }}
+                  onClick={getExamHandler}
+                >
+                  دیافت
+                </Button>
+              </Typography>
+
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2, mb: 1 }}>
+                <Box sx={{ flex: "1 1 auto" }} />
+                <Button onClick={handleReset} variant="contained">
+                  ثبت سفارش
+                </Button>
+              </Box>
+
               <OrderTable />
             </FromWrapper>
-          </React.Fragment>
-        )}
+          ) : (
+            <React.Fragment>
+              <FromWrapper title="مرحله اول">
+                {activeStep === 0 ? (
+                  <Initialize handleNext={handleNext} activeStep={activeStep} />
+                ) : null}
+                {activeStep === 1 ? (
+                  <SelectSubject
+                    handleNext={handleNext}
+                    handleBack={handleBack}
+                  />
+                ) : null}
+                {activeStep === 2 ? (
+                  <Preparing
+                    handleNext={handleNext}
+                    handleBack={handleBack}
+                    activeStep={activeStep}
+                  />
+                ) : null}
+              </FromWrapper>
+              <FromWrapper title="جدول سفارشات">
+                <OrderTable />
+              </FromWrapper>
+            </React.Fragment>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };

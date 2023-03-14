@@ -70,7 +70,6 @@ export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
             handleChange={handleChange}
             value={episode}
             inputLabel="درس"
-            // error={!!episode.length}
             multiple
           >
             {episodeList.map((item: preparingItemModel) => {

@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../ui/Input/Input";
+import { useAtom } from "jotai";
 import { useUserAuthentication } from "../../services/application_authentication/appAuthentication.query";
 import { MODEL } from "../../services/application_authentication/appAuthentication.interface";
+import { userIsLogIn } from "../../store";
 
 interface registerModel {
   userName: string;
@@ -46,8 +48,10 @@ const passRules = {
 };
 
 export const Form = () => {
-  const [isSignUp, setIsSignUp] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isSignUpPage, setIsSignUpPage] = useState<boolean>(false);
+  const [isLoginPage, setIsLoginPage] = useState<boolean>(true);
+  const [isLogIn, setIsLogIn] = useAtom(userIsLogIn);
+
   const {
     mutate: setAuthentication,
     isLoading,
@@ -68,11 +72,11 @@ export const Form = () => {
     },
   });
   const redirectHandler = () => {
-    setIsLogin(!isLogin);
-    setIsSignUp(!isSignUp);
+    setIsLoginPage(!isLoginPage);
+    setIsSignUpPage(!isSignUpPage);
   };
   const onSubmit = (data: registerModel) => {
-    if (isSignUp)
+    if (isSignUpPage)
       setAuthentication(
         {
           name: data.userName,
@@ -82,7 +86,8 @@ export const Form = () => {
         },
         {
           onSuccess() {
-            console.log(response);
+            setIsLogIn(true);
+            navigate("/quizBuilder");
           },
           onError() {
             console.log("Some went wrong!");
@@ -117,7 +122,7 @@ export const Form = () => {
             )}
           />
         </Grid>
-        {isSignUp ? (
+        {isSignUpPage ? (
           <Grid item xs={12} sx={centeringStyle}>
             <Controller
               name="email"
@@ -153,7 +158,7 @@ export const Form = () => {
             )}
           />
         </Grid>
-        {isSignUp ? (
+        {isSignUpPage ? (
           <Grid item xs={12} sx={centeringStyle}>
             <Controller
               name="confirmPassword"
@@ -187,10 +192,10 @@ export const Form = () => {
             <Button
               type="submit"
               variant="contained"
-              color={isLogin ? "primary" : "success"}
+              color={isLoginPage ? "primary" : "success"}
               sx={{ width: "70%" }}
             >
-              {isLogin ? "ورود" : "ثبت نام"}
+              {isLoginPage ? "ورود" : "ثبت نام"}
             </Button>
 
             <Typography
@@ -201,7 +206,7 @@ export const Form = () => {
               onClick={redirectHandler}
               sx={{ cursor: "pointer" }}
             >
-              {isLogin ? " ورود به صفحه ثبت نام" : "برای ورود کلیک کنید"}
+              {isLoginPage ? " ورود به صفحه ثبت نام" : "برای ورود کلیک کنید"}
             </Typography>
           </Box>
         </Grid>

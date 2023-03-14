@@ -8,17 +8,6 @@ import { Form } from "./Form";
 // const BASE = process.env.BASE_API;
 
 export const RegisterForm = () => {
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await api.post("", {
-  //       name: "",
-  //       email: "",
-  //       pass: "",
-  //     });
-  //   };
-  //   fetchData().catch((err) => console.log(err.message));
-  // }, []);
-
   return (
     <Box
       sx={{
