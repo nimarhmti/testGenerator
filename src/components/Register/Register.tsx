@@ -39,6 +39,7 @@ export const RegisterForm = () => {
           style={{ objectFit: "cover", marginLeft: "50px" }}
         />
       </Box>
+      <div></div>
     </Box>
   );
 };
