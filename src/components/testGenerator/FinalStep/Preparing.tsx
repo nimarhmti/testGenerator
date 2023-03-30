@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SelectBox } from "../../ui/SelectBox/SelectBox";
 import { Input } from "../../ui/Input/Input";
 interface inputModel {
-  numberOfQuestions: number;
+  timing: number;
 }
 
 interface preparingItemModel {
@@ -30,12 +30,12 @@ const inputRules = {
     value: true,
   },
   max: {
-    message: "حداکثر تعداد سوالات 30 میباشد",
-    value: 30,
+    message: "میزان زمان وارد شده باید کمتر از 120 دقیقه باشد",
+    value: 120,
   },
   min: {
-    message: "حداقل تعداد سوالات 3 مباشد ",
-    value: 3,
+    message: "میزان زمان وارد شده باید بیشتر از 20 دقیقه باشد",
+    value: 20,
   },
 };
 
@@ -48,7 +48,7 @@ export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
     formState: { errors },
   } = useForm<inputModel>({
     defaultValues: {
-      numberOfQuestions: 3,
+      timing: 3,
     },
   });
 
@@ -60,7 +60,8 @@ export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
   };
 
   const onSubmit = (data: any) => {
-    if (errors) handleNext();
+    console.log({ ...data, episode });
+    handleNext();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,19 +84,15 @@ export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
         </Grid>
         <Grid item xs={6}>
           <Controller
-            name="numberOfQuestions"
+            name="timing"
             control={control}
             rules={inputRules}
             render={({ field }) => (
               <Input
                 {...field}
-                error={!!errors.numberOfQuestions}
-                label="تعدا سوالات"
-                helperText={
-                  errors.numberOfQuestions
-                    ? errors.numberOfQuestions?.message
-                    : ""
-                }
+                error={!!errors.timing}
+                label="زمان"
+                helperText={errors.timing ? errors.timing?.message : ""}
               />
             )}
           />
@@ -110,7 +107,7 @@ export const Preparing = ({ handleBack, handleNext, activeStep }: props) => {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" type="submit">
+        <Button variant="contained" onClick={handleBack}>
           قبلی
         </Button>
         <Button variant="contained" type="submit" color="success">

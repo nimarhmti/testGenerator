@@ -16,7 +16,7 @@ interface registerInputModel {
   userName: string;
   email?: string;
   password: string;
-  confirmPassword?: string;
+  // confirmPassword?: string;
 }
 
 const centeringStyle = {
@@ -74,7 +74,6 @@ export const Form = () => {
       password: "",
       userName: "",
       email: "",
-      confirmPassword: "",
     },
   });
   const redirectHandler = () => {
@@ -88,7 +87,6 @@ export const Form = () => {
           name: data.userName,
           email: data.email,
           password: data.password,
-          password_confirmation: data.confirmPassword,
         },
         {
           onSuccess() {
@@ -182,7 +180,7 @@ export const Form = () => {
             )}
           />
         </Grid>
-        {isSignUpPage ? (
+        {/* {isSignUpPage ? (
           <Grid item xs={12} sx={centeringStyle}>
             <Controller
               name="confirmPassword"
@@ -201,7 +199,7 @@ export const Form = () => {
               )}
             />
           </Grid>
-        ) : null}
+        ) : null} */}
 
         <Grid item xs={12}>
           <Box

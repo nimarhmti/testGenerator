@@ -65,8 +65,8 @@ export const Initialize = ({ handleNext, activeStep }: props) => {
                 inputLabel="مقطع"
                 error={!!errors.grade}
               >
-                {gradeItems.map((item: ItemModel) => (
-                  <MenuItem value={item.value} key={item.value}>
+                {gradeItems.map((item: ItemModel, index: any) => (
+                  <MenuItem value={item.value} key={index}>
                     {item.title}
                   </MenuItem>
                 ))}

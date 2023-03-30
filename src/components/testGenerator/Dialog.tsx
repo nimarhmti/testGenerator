@@ -35,7 +35,7 @@ export default function AlertDialog({
             برای دریافت نمونه سوالات ابتدا باید ثبت نلم کنید
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ display: "flex", gap: "10px" }}>
           <Button
             autoFocus
             variant="contained"

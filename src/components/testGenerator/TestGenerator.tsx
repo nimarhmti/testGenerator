@@ -17,9 +17,10 @@ import { OrderTable } from "./Table/Table";
 import { useAtom } from "jotai";
 import { isAuthentication } from "../../store";
 import AlertDialog from "./Dialog";
-const steps = ["مرحله یک", "مرحله دوم", "مرحله سوم"];
+const steps = ["مرحله یک", "مرحله دوم", "مرحله آخر"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [titleStep, setTitleStep] = React.useState<string>("مرحله اول");
   const [isLogIn, setIsLogIn] = useAtom(isAuthentication);
   const [open, setOpen] = React.useState(false);
 
@@ -27,9 +28,6 @@ export const TestGenerator = () => {
   const handleClose = () => setOpen(false);
 
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  useEffect(() => {
-    console.log(activeStep);
-  }, [activeStep]);
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -70,6 +68,18 @@ export const TestGenerator = () => {
     if (isLogIn) return;
     else handleOpen();
   };
+
+  // const titleStepHandler = () => {
+  //   switch (activeStep) {
+  //     case 0:
+  //       break;
+  //     case 1:
+  //       setTitleStep("مرحله دوم");
+  //     default:
+  //       break;
+  //   }
+  // };
+
   return (
     <>
       <AlertDialog
@@ -101,7 +111,7 @@ export const TestGenerator = () => {
             })}
           </Stepper>
           {activeStep === steps.length ? (
-            <FromWrapper title="جدول سفارشات">
+            <FromWrapper title="دریافت سوالات">
               <Typography sx={{ mt: 2, mb: 1 }}>
                 <Chip label="برای دریافت سوالات کلیک کنید..." color="success" />
                 <Button
@@ -125,7 +135,7 @@ export const TestGenerator = () => {
             </FromWrapper>
           ) : (
             <React.Fragment>
-              <FromWrapper title="مرحله اول">
+              <FromWrapper title={steps[activeStep]}>
                 {activeStep === 0 ? (
                   <Initialize handleNext={handleNext} activeStep={activeStep} />
                 ) : null}

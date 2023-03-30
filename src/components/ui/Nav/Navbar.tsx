@@ -134,7 +134,7 @@ export const Navbar = () => {
                 }}
               >
                 <Typography fontFamily="iranSans" textAlign="match-parent">
-                  ساخت آژمون
+                  ساخت آزمون
                 </Typography>
               </MenuItem>
             </Menu>

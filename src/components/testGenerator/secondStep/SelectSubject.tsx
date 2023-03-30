@@ -9,7 +9,6 @@ import { Box } from "@mui/system";
 interface selectedSubjectFrom {
   subject: string;
   difficulty: string;
-  time: string;
 }
 interface props {
   handleNext: () => void;
@@ -54,7 +53,6 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
     defaultValues: {
       subject: "",
       difficulty: "",
-      time: "",
     },
   });
 
@@ -64,7 +62,7 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <Controller
             name="subject"
             control={control}
@@ -85,7 +83,7 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
             )}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <Controller
             name="difficulty"
             control={control}
@@ -108,7 +106,7 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
             )}
           />
         </Grid>
-        <Grid item xs={4}>
+        {/* <Grid item xs={4}>
           <Controller
             name="time"
             control={control}
@@ -123,7 +121,7 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
               />
             )}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
       <Box
         sx={{
