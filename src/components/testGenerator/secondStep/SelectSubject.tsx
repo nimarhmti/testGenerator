@@ -30,20 +30,20 @@ const subjectListItem: ItemModel[] = [
   { value: "s3", title: "دینی" },
 ];
 
-const inputRules = {
-  required: {
-    message: "لطفا فیلد را پر کنید",
-    value: true,
-  },
-  max: {
-    message: "میزان زمان وارد شده باید کمتر از 120 دقیقه باشد",
-    value: 120,
-  },
-  min: {
-    message: "میزان زمان وارد شده باید بیشتر از 10 دقیقه باشد",
-    value: 10,
-  },
-};
+// const inputRules = {
+//   required: {
+//     message: "لطفا فیلد را پر کنید",
+//     value: true,
+//   },
+//   max: {
+//     message: "میزان زمان وارد شده باید کمتر از 120 دقیقه باشد",
+//     value: 120,
+//   },
+//   min: {
+//     message: "میزان زمان وارد شده باید بیشتر از 10 دقیقه باشد",
+//     value: 10,
+//   },
+// };
 export const SelectSubject = ({ handleBack, handleNext }: props) => {
   const {
     control,
