@@ -17,6 +17,7 @@ import { OrderTable } from "./Table/Table";
 import { useAtom } from "jotai";
 import { isAuthentication } from "../../store";
 import AlertDialog from "./Dialog";
+import { GetExam } from "./getExam/GetExam";
 const steps = ["مرحله یک", "مرحله دوم", "مرحله آخر"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -65,8 +66,8 @@ export const TestGenerator = () => {
     setActiveStep(0);
   };
   const getExamHandler = () => {
-    if (isLogIn) return;
-    else handleOpen();
+    // if (isLogIn) return;
+    // else handleOpen();
   };
 
   // const titleStepHandler = () => {
@@ -111,28 +112,7 @@ export const TestGenerator = () => {
             })}
           </Stepper>
           {activeStep === steps.length ? (
-            <FromWrapper title="دریافت سوالات">
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                <Chip label="برای دریافت سوالات کلیک کنید..." color="success" />
-                <Button
-                  variant="outlined"
-                  color="success"
-                  sx={{ marginRight: 1, width: "10px" }}
-                  onClick={getExamHandler}
-                >
-                  دیافت
-                </Button>
-              </Typography>
-
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2, mb: 1 }}>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={handleReset} variant="contained">
-                  ثبت سفارش
-                </Button>
-              </Box>
-
-              <OrderTable />
-            </FromWrapper>
+            <GetExam handleReset={handleReset} />
           ) : (
             <React.Fragment>
               <FromWrapper title={steps[activeStep]}>
