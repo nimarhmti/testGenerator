@@ -7,6 +7,11 @@ export const userAuthentication = async (payload: authUserDataModel) => {
 };
 
 export const userLogIn = async (payload: authUserDataModel) => {
-  const response = await api.post(`${serviceName}/login`);
+  const response = await api.post(`${serviceName}/login`, payload);
+  return response.data;
+};
+
+export const userLogout = async () => {
+  const response = await api.post(`${serviceName}/user`);
   return response.data;
 };

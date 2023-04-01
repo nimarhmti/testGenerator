@@ -11,12 +11,13 @@ import {
 } from "../../services/application_authentication/appAuthentication.query";
 
 import { isAuthentication } from "../../store";
+import { AlertInfo, AlertMessage } from "../ui/Alert/Alert";
 
 interface registerInputModel {
-  userName: string;
-  email?: string;
+  name?: string;
+  email: string;
   password: string;
-  confirmPassword?: string;
+  password_confirmation?: string;
 }
 
 const centeringStyle = {
@@ -53,15 +54,14 @@ const passRules = {
 export const Form = () => {
   const [isSignUpPage, setIsSignUpPage] = useState<boolean>(false);
   const [isLoginPage, setIsLoginPage] = useState<boolean>(true);
-  const [isLogIn, setIsLogIn] = useAtom(isAuthentication);
-
-  const {
-    mutate: setAuthentication,
-    isLoading: isSigningUp,
-    data: signUpResponse,
-  } = useUserAuthentication();
-  const { mutate: setLogIn, isLoading, data: logInResponse } = useUserLogIn();
-
+  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthentication);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertInfo, setAlertInfo] = useState<AlertInfo>({
+    message: "",
+    result: false,
+  });
+  const { mutate: userSignIn } = useUserAuthentication();
+  const { mutate: userLogin } = useUserLogIn();
   const navigate = useNavigate();
 
   const {
@@ -71,82 +71,95 @@ export const Form = () => {
     formState: { errors },
   } = useForm<registerInputModel>({
     defaultValues: {
-      password: "",
-      userName: "",
+      name: "",
       email: "",
-      confirmPassword: "",
+      password: "",
+      password_confirmation: "",
     },
   });
+
   const redirectHandler = () => {
     setIsLoginPage(!isLoginPage);
     setIsSignUpPage(!isSignUpPage);
   };
   const onSubmit = (data: registerInputModel) => {
-    if (isSignUpPage)
-      setAuthentication(
-        {
-          name: data.userName,
-          email: data.email,
-          password: data.password,
-          password_confirmation: data.confirmPassword,
+    if (isSignUpPage) {
+      userSignIn(data, {
+        onSuccess() {
+          setIsAuthenticated(true);
+          setAlertInfo({ message: "ثبت نام با موفقیت نجام شد", result: true });
+          setOpenAlert(true);
+          navigate("/quizBuilder");
+          reset();
         },
+        onError() {
+          setAlertInfo({ message: "بروز خطا در هنگام ثبت نام", result: false });
+          setOpenAlert(true);
+        },
+      });
+    } else {
+      userLogin(
+        { email: data.email, password: data.password },
         {
           onSuccess() {
-            setIsLogIn(true);
-            reset();
+            setIsAuthenticated(true);
+            setAlertInfo({ message: "ورود با موفقیت نجام شد", result: true });
+            setOpenAlert(true);
             navigate("/quizBuilder");
+            reset();
           },
           onError() {
-            console.log("Some went wrong!:signUp ");
+            setAlertInfo({
+              message: "بروز خطا در هنگام ورود ",
+              result: false,
+            });
+            setOpenAlert(true);
           },
         }
       );
-    else
-      setLogIn(
-        {
-          name: data.userName,
-          password: data.password,
-        },
-        {
-          onSuccess() {
-            setIsLogIn(true);
-            reset();
-            navigate("/quizBuilder");
-          },
-          onError() {
-            console.log("Some went wrong!:logIn");
-          },
-        }
-      );
+    }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3} flexDirection="column">
-        <Grid item xs={12} sx={{ ...centeringStyle, flexDirection: "column" }}>
-          <Typography variant="h5" fontWeight={700} color="#F08C00">
-            ورود به سایت آزمون ساز
-          </Typography>
-          <Typography variant="caption" color="#495057" fontWeight="400">
-            برای دسترسی بیشتر به منابع لطفا ثبت نام کنید
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sx={centeringStyle}>
-          <Controller
-            name="userName"
-            control={control}
-            rules={emailRules}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label="نام کاربری"
-                fullWidth
-                error={!!errors.userName}
-                helperText={errors.userName ? errors.userName.message : ""}
+    <>
+      <AlertMessage
+        message={alertInfo.message}
+        result={alertInfo.result}
+        isOpen={openAlert}
+        onClose={() => setOpenAlert(false)}
+      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={3} flexDirection="column">
+          <Grid
+            item
+            xs={12}
+            sx={{ ...centeringStyle, flexDirection: "column" }}
+          >
+            <Typography variant="h5" fontWeight={700} color="#F08C00">
+              ورود به سایت آزمون ساز
+            </Typography>
+            <Typography variant="caption" color="#495057" fontWeight="400">
+              برای دسترسی بیشتر به منابع لطفا ثبت نام کنید
+            </Typography>
+          </Grid>
+          {isSignUpPage ? (
+            <Grid item xs={12} sx={centeringStyle}>
+              <Controller
+                name="name"
+                control={control}
+                rules={emailRules}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label="نام کاربری"
+                    fullWidth
+                    error={!!errors.name}
+                    helperText={errors.name ? errors.name.message : ""}
+                  />
+                )}
               />
-            )}
-          />
-        </Grid>
-        {isSignUpPage ? (
+            </Grid>
+          ) : null}
+
           <Grid item xs={12} sx={centeringStyle}>
             <Controller
               name="email"
@@ -157,84 +170,86 @@ export const Form = () => {
                   {...field}
                   label="ایمیل"
                   fullWidth
-                  error={!!errors.userName}
-                  helperText={errors.userName ? errors.userName.message : ""}
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ""}
                 />
               )}
             />
           </Grid>
-        ) : null}
 
-        <Grid item xs={12} sx={centeringStyle}>
-          <Controller
-            name="password"
-            control={control}
-            rules={passRules}
-            render={({ field }) => (
-              <Input
-                type="password"
-                {...field}
-                label="رمز"
-                fullWidth
-                error={!!errors.password}
-                helperText={errors.password ? errors.password.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        {isSignUpPage ? (
           <Grid item xs={12} sx={centeringStyle}>
             <Controller
-              name="confirmPassword"
+              name="password"
               control={control}
               rules={passRules}
               render={({ field }) => (
                 <Input
+                  type="password"
                   {...field}
-                  label="تکرار رمز"
+                  label="رمز"
                   fullWidth
-                  error={!!errors.confirmPassword}
-                  helperText={
-                    errors.confirmPassword ? errors.confirmPassword.message : ""
-                  }
+                  error={!!errors.password}
+                  helperText={errors.password ? errors.password.message : ""}
                 />
               )}
             />
           </Grid>
-        ) : null}
+          {isSignUpPage ? (
+            <Grid item xs={12} sx={centeringStyle}>
+              <Controller
+                name="password_confirmation"
+                control={control}
+                rules={passRules}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label="تکرار رمز"
+                    fullWidth
+                    error={!!errors.password_confirmation}
+                    helperText={
+                      errors.password_confirmation
+                        ? errors.password_confirmation.message
+                        : ""
+                    }
+                  />
+                )}
+              />
+            </Grid>
+          ) : null}
 
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              flexDirection: "column",
-            }}
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              color={isLoginPage ? "primary" : "success"}
-              sx={{ width: "70%" }}
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                flexDirection: "column",
+              }}
             >
-              {isLoginPage ? "ورود" : "ثبت نام"}
-            </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color={isLoginPage ? "primary" : "success"}
+                sx={{ width: "70%" }}
+              >
+                {isLoginPage ? "ورود" : "ثبت نام"}
+              </Button>
 
-            <Typography
-              variant="caption"
-              color="#495057"
-              fontWeight="400"
-              mt={1}
-              onClick={redirectHandler}
-              sx={{ cursor: "pointer" }}
-            >
-              {isLoginPage ? " ورود به صفحه ثبت نام" : "برای ورود کلیک کنید"}
-            </Typography>
-          </Box>
+              <Typography
+                variant="caption"
+                color="#495057"
+                fontWeight="400"
+                mt={1}
+                onClick={redirectHandler}
+                sx={{ cursor: "pointer" }}
+              >
+                {isLoginPage ? " ورود به صفحه ثبت نام" : "برای ورود کلیک کنید"}
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </>
   );
 };
