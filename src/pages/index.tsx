@@ -1,5 +1,4 @@
 export * from "./HomePage/HomePage";
-export * from "./LogIn/LogIn";
 export * from "./Pricing/Pricing";
 export * from "./QuizBuilder/QuizBuilder";
 export * from "./Register/Register";

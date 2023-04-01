@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import {
   HomePage,
-  LogIn,
   Pricing,
   QuizBuilder,
   Register,
@@ -20,12 +19,6 @@ export const routes: routeModel[] = [
     id: "homepage",
     path: "/",
     components: <HomePage />,
-    private: false,
-  },
-  {
-    id: "login",
-    path: "/login",
-    components: <LogIn />,
     private: false,
   },
   {
