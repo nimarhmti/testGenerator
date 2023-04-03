@@ -12,6 +12,7 @@ import {
 
 import { isAuthentication } from "../../store";
 import { AlertInfo, AlertMessage } from "../ui/Alert/Alert";
+import Spinner from "../ui/Spinner/Spinner";
 
 interface registerInputModel {
   name?: string;
@@ -54,6 +55,7 @@ const passRules = {
 export const Form = () => {
   const [isSignUpPage, setIsSignUpPage] = useState<boolean>(false);
   const [isLoginPage, setIsLoginPage] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthentication);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertInfo, setAlertInfo] = useState<AlertInfo>({
@@ -83,9 +85,11 @@ export const Form = () => {
     setIsSignUpPage(!isSignUpPage);
   };
   const onSubmit = (data: registerInputModel) => {
+    setIsLoading(true);
     if (isSignUpPage) {
       userSignIn(data, {
         onSuccess() {
+          setIsLoading(false);
           setIsAuthenticated(true);
           setAlertInfo({ message: "ثبت نام با موفقیت نجام شد", result: true });
           setOpenAlert(true);
@@ -93,6 +97,7 @@ export const Form = () => {
           reset();
         },
         onError() {
+          setIsLoading(false);
           setAlertInfo({ message: "بروز خطا در هنگام ثبت نام", result: false });
           setOpenAlert(true);
         },
@@ -102,6 +107,7 @@ export const Form = () => {
         { email: data.email, password: data.password },
         {
           onSuccess() {
+            setIsLoading(false);
             setIsAuthenticated(true);
             setAlertInfo({ message: "ورود با موفقیت نجام شد", result: true });
             setOpenAlert(true);
@@ -109,6 +115,7 @@ export const Form = () => {
             reset();
           },
           onError() {
+            setIsLoading(false);
             setAlertInfo({
               message: "بروز خطا در هنگام ورود ",
               result: false,
@@ -121,6 +128,7 @@ export const Form = () => {
   };
   return (
     <>
+      <Spinner loading={isLoading} />
       <AlertMessage
         message={alertInfo.message}
         result={alertInfo.result}

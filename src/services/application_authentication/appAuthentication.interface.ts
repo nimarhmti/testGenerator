@@ -4,3 +4,11 @@ export interface authUserDataModel {
   password: string;
   password_confirmation?: string;
 }
+
+export interface orders {
+  type: string;
+  level: string;
+  max_scoure: number;
+  time: number;
+  lectures: string[];
+}

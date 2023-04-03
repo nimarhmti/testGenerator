@@ -22,8 +22,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Links, linksModel } from "../../../config/navigation";
 import { isAuthentication } from "../../../store";
-import { useUserLogout } from "../../../services/application_authentication/appAuthentication.query";
+import {
+  localStorageKeyName,
+  useUserLogout,
+} from "../../../services/application_authentication/appAuthentication.query";
 import { AlertInfo, AlertMessage } from "../Alert/Alert";
+import Spinner from "../Spinner/Spinner";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -36,6 +40,7 @@ export const Navbar = () => {
   );
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthentication);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alertInfo, setAlertInfo] = useState<AlertInfo>({
     message: "",
     result: false,
@@ -60,17 +65,23 @@ export const Navbar = () => {
   };
 
   const logoutHandler = () => {
+    setIsLoading(true);
     userLogout(null, {
       onSuccess() {
+        setIsLoading(false);
         setIsAuthenticated(false);
-        setAlertInfo({ message: "ورود با موفقیت نجام شد", result: true });
+        setAlertInfo({ message: "خروج با موفقیت نجام شد", result: true });
         setOpenAlert(true);
+        navigate("/");
         handleCloseUserMenu();
       },
     });
+    setIsLoading(false);
   };
+
   return (
     <>
+      <Spinner loading={isLoading} />
       <AlertMessage
         message={alertInfo.message}
         result={alertInfo.result}
@@ -130,7 +141,7 @@ export const Navbar = () => {
                 open={!!anchorElUser}
                 onClose={handleCloseUserMenu}
               >
-                {isAuthenticated ? (
+                {localStorage.getItem(localStorageKeyName) === "true" ? (
                   <MenuItem
                     onClick={logoutHandler}
                     sx={{ justifyContent: "flex-start" }}
