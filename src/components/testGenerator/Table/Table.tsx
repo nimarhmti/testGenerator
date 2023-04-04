@@ -14,7 +14,14 @@ function createData(
   difficulty: string,
   score: number
 ) {
-  return { grade, issues, numberOfQuestion, difficulty, score };
+  return {
+    grade,
+    issues,
+    numberOfQuestion,
+    difficulty,
+    score,
+    id: Math.floor(Math.random() * 100000000),
+  };
 }
 
 const rows = [
@@ -39,9 +46,9 @@ export const OrderTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row: any) => (
             <TableRow
-              key={row.grade}
+              key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="right" component="th" scope="row">

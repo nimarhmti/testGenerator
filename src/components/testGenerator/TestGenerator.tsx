@@ -18,6 +18,7 @@ import { useAtom } from "jotai";
 import { isAuthentication } from "../../store";
 import AlertDialog from "./Dialog";
 import { GetExam } from "./getExam/GetExam";
+import { keys } from "../../config/Enum";
 const steps = ["مرحله یک", "مرحله دوم", "مرحله آخر"];
 export const TestGenerator = () => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -64,22 +65,8 @@ export const TestGenerator = () => {
   };
   const handleReset = () => {
     setActiveStep(0);
+    localStorage.removeItem(keys.ExamKey);
   };
-  const getExamHandler = () => {
-    // if (isLogIn) return;
-    // else handleOpen();
-  };
-
-  // const titleStepHandler = () => {
-  //   switch (activeStep) {
-  //     case 0:
-  //       break;
-  //     case 1:
-  //       setTitleStep("مرحله دوم");
-  //     default:
-  //       break;
-  //   }
-  // };
 
   return (
     <>

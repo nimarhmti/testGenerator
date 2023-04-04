@@ -10,7 +10,7 @@ export const userLogIn = async (payload: authUserDataModel) => {
   const response = await api.post(`${serviceName}/login`, payload, {
     withCredentials: true,
   });
-  console.log(response);
+
   return response.data;
 };
 

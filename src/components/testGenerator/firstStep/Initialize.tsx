@@ -38,9 +38,9 @@ const amountScore: maxScoreModel[] = [
 ];
 
 const typeOfExamItems: TypeOfExam[] = [
-  { id: "L1", level: "آسان" },
-  { id: "L2", level: "متوسط" },
-  { id: "L3", level: "سخت" },
+  { id: "L1", level: "میان ترم" },
+  { id: "L2", level: "مستمر" },
+  { id: "L3", level: "پایان" },
 ];
 
 export const Initialize = ({ handleNext, activeStep }: props) => {
@@ -59,7 +59,7 @@ export const Initialize = ({ handleNext, activeStep }: props) => {
   });
 
   const onSubmit = (data: InitializeForm) => {
-    if (!errors) {
+    if (errors) {
       setInitialField({
         sectionId: data.sections,
         amountOfScore: data.examScore,
@@ -67,7 +67,7 @@ export const Initialize = ({ handleNext, activeStep }: props) => {
       });
       handleNext();
     }
-    if (errors) console.log(errors);
+    if (!errors) return;
   };
   return (
     <>

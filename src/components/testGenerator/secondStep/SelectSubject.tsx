@@ -1,11 +1,16 @@
 import { styled } from "@mui/material/styles";
-import { Button, Grid, MenuItem } from "@mui/material";
+import { Button, Grid, MenuItem, LinearProgress } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "../../ui/Input/Input";
 import { SelectBox } from "../../ui/SelectBox/SelectBox";
 import { Box } from "@mui/system";
+import { useGetTopic } from "../../../services/SelectSubjectStep/SelectSubject.query";
+import { useAtom } from "jotai";
+import { InitializeState } from "../firstStep/State/InitializeState";
+import { getTopicModel } from "../../../services/SelectSubjectStep/SelectSubject.interface";
+import { selectSubjectState } from "./SelectSubjectState/SelectSubjectState";
 interface selectedSubjectFrom {
   subject: string;
   difficulty: string;
@@ -24,26 +29,7 @@ const difficultyListItem: ItemModel[] = [
   { value: "d2", title: "متوسط" },
   { value: "d3", title: "سخت" },
 ];
-const subjectListItem: ItemModel[] = [
-  { value: "s1", title: "ریاضی" },
-  { value: "s2", title: "علوم" },
-  { value: "s3", title: "دینی" },
-];
 
-// const inputRules = {
-//   required: {
-//     message: "لطفا فیلد را پر کنید",
-//     value: true,
-//   },
-//   max: {
-//     message: "میزان زمان وارد شده باید کمتر از 120 دقیقه باشد",
-//     value: 120,
-//   },
-//   min: {
-//     message: "میزان زمان وارد شده باید بیشتر از 10 دقیقه باشد",
-//     value: 10,
-//   },
-// };
 export const SelectSubject = ({ handleBack, handleNext }: props) => {
   const {
     control,
@@ -55,90 +41,90 @@ export const SelectSubject = ({ handleBack, handleNext }: props) => {
       difficulty: "",
     },
   });
-
+  //prev step filed :step[0]
+  const [initialField] = useAtom(InitializeState);
+  //current step filed: step[1]
+  const [selectSubjectField, setSelectSubjectField] =
+    useAtom(selectSubjectState);
+  const { data: topics, isLoading } = useGetTopic(initialField.sectionId);
   const onSubmit = (data: selectedSubjectFrom) => {
-    if (errors) handleNext();
+    if (errors) {
+      //thats mean there is no any error
+      setSelectSubjectField({ topic: data.subject, level: data.difficulty });
+      handleNext();
+    } else return;
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Controller
-            name="subject"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <SelectBox
-                handleChange={onChange}
-                value={value}
-                inputLabel="موضوع"
-                error={!!errors.subject}
-              >
-                {subjectListItem.map((item: ItemModel) => (
-                  <MenuItem value={item.value} key={item.value}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-              </SelectBox>
-            )}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controller
-            name="difficulty"
-            control={control}
-            rules={{
-              required: { value: true, message: "این فیلد را پرکنید" },
-            }}
-            render={({ field: { onChange, value } }) => (
-              <SelectBox
-                handleChange={onChange}
-                value={value}
-                inputLabel="میزان سختی"
-                error={!!errors.difficulty}
-              >
-                {difficultyListItem.map((item: ItemModel) => (
-                  <MenuItem value={item.value} key={item.value}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-              </SelectBox>
-            )}
-          />
-        </Grid>
-        {/* <Grid item xs={4}>
-          <Controller
-            name="time"
-            control={control}
-            rules={inputRules}
-            render={({ field }) => (
-              <Input
-                {...field}
-                label="زمان"
-                fullWidth
-                error={!!errors.time}
-                helperText={errors.time ? errors.time.message : ""}
+    <>
+      {isLoading ? (
+        <LinearProgress />
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Controller
+                name="subject"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <SelectBox
+                    handleChange={onChange}
+                    value={value}
+                    inputLabel="موضوع"
+                    error={!!errors.subject}
+                  >
+                    {topics.map((item: getTopicModel) => (
+                      <MenuItem value={item.id} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </SelectBox>
+                )}
               />
-            )}
-          />
-        </Grid> */}
-      </Grid>
-      <Box
-        sx={{
-          marginTop: 2,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button variant="contained" onClick={handleBack}>
-          بازگشت
-        </Button>
-        <Button variant="contained" color="success" type="submit">
-          ادامه
-        </Button>
-      </Box>
-    </form>
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="difficulty"
+                control={control}
+                rules={{
+                  required: { value: true, message: "این فیلد را پرکنید" },
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <SelectBox
+                    handleChange={onChange}
+                    value={value}
+                    inputLabel="میزان سختی"
+                    error={!!errors.difficulty}
+                  >
+                    {difficultyListItem.map((item: ItemModel) => (
+                      <MenuItem value={item.title} key={item.value}>
+                        {item.title}
+                      </MenuItem>
+                    ))}
+                  </SelectBox>
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              marginTop: 2,
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button variant="contained" onClick={handleBack}>
+              بازگشت
+            </Button>
+            <Button variant="contained" color="success" type="submit">
+              ادامه
+            </Button>
+          </Box>
+        </form>
+      )}
+    </>
   );
 };
