@@ -11,7 +11,9 @@ export const GetExam = ({ handleReset }: Props) => {
   const id = localStorage.getItem(keys.ExamKey);
 
   const { data: examDocs, isLoading } = useGetQuiz(id);
-  const getExamHandler = () => {};
+  const getExamHandler = () => {
+    console.log(examDocs);
+  };
   return (
     <>
       {isLoading ? (

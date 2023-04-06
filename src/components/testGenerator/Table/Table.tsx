@@ -6,6 +6,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Table } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useGetOrders } from "../../../services/PreparingStep/PreparingStep.query";
 
 function createData(
   grade: string,
@@ -33,31 +35,37 @@ const rows = [
 ];
 
 export const OrderTable = () => {
+  const { data: orders, isLoading } = useGetOrders();
+  if (isLoading) return <p>isLoading...</p>;
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">مقطع</TableCell>
             <TableCell align="right">موضوع</TableCell>
-            <TableCell align="right">تعداد سوالات</TableCell>
-            <TableCell align="right">میزان سختی</TableCell>
+            <TableCell align="right">سطح</TableCell>
+            <TableCell align="right">نوع آزمون</TableCell>
+            <TableCell align="right">مدت زمان (دقیقه)</TableCell>
             <TableCell align="right">جمع نمرات</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row: any) => (
+          {orders.map((row: any) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="right" component="th" scope="row">
-                {row.grade}
+                {row.topic.name}
               </TableCell>
-              <TableCell align="right">{row.issues}</TableCell>
-              <TableCell align="right">{row.numberOfQuestion}</TableCell>
-              <TableCell align="right">{row.difficulty}</TableCell>
-              <TableCell align="right">{row.score}</TableCell>
+              <TableCell align="right">{row.level}</TableCell>
+              <TableCell align="right">{row.type}</TableCell>
+              <TableCell align="right">{row.time}</TableCell>
+              <TableCell align="right">{row.max_scoure}</TableCell>
+              <TableCell align="right">
+                <MoreVertIcon />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

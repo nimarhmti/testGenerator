@@ -27,6 +27,7 @@ export default function AlertDialog({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        {title ? <DialogTitle>{title}</DialogTitle> : null}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {children}

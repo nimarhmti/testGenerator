@@ -26,3 +26,8 @@ export const getQuiz = async (id: number | string | null) => {
   });
   return response.data;
 };
+
+export const getOrders = async () => {
+  const response = await api.get(`${serviceName}/orders`);
+  return response.data;
+};
