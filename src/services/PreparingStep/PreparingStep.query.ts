@@ -22,10 +22,15 @@ export const useSubmitOrder = () =>
     },
   });
 
-export const useGetQuiz = (id: number | string | null) =>
+export const useGetQuiz = (id: number | string | null, isCall: boolean) =>
   useQuery({
     queryKey: "Questions",
     queryFn: () => getQuiz(id),
+    enabled: isCall,
+    keepPreviousData: false,
+    retry: 2,
+    staleTime: 1000,
+    cacheTime: 1000,
   });
 
 export const useGetOrders = () =>

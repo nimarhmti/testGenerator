@@ -1,18 +1,22 @@
 import { Box, Button, Chip, Typography, LinearProgress } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FromWrapper } from "../../ui/wrappers/FromWrapper";
 import { OrderTable } from "../Table/Table";
 import { keys } from "../../../config/Enum";
 import { useGetQuiz } from "../../../services/PreparingStep/PreparingStep.query";
+import ReactPDF, { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import PDFFile from "../../ui/Export/Export";
+// import { Export } from "../../ui/Export/Export";
 interface Props {
   handleReset: () => void;
 }
 export const GetExam = ({ handleReset }: Props) => {
   const id = localStorage.getItem(keys.ExamKey);
-
-  const { data: examDocs, isLoading } = useGetQuiz(id);
+  const [isCall, setISCall] = useState<boolean>(false);
+  const { data: examDocs, isLoading } = useGetQuiz(id, isCall);
+ 
   const getExamHandler = () => {
-    console.log(examDocs);
+    setISCall(true);
   };
   return (
     <>
